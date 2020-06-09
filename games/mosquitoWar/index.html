@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>蚊子大作战</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div>
+        <div>
+            <span>数量</span><input type="number" id="number" min="1" value="1" max="99" />
+        </div>
+        <div>
+            <span>速度</span><input type="number" max="10" min="1" value="5" id="speed" />
+        </div>
+        <div>
+            <button onclick="onStart()">开始</button>
+        </div>
+    </div>
+    <div>
+        <div id="record"></div>
+        <div id="app"></div>
+        <div id="flyswatter">
+            <div class="flyswatter-body"></div>
+            <div class="flyswatter-handler"></div>
+        </div>
+        <div id="burst"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        var gameStartFlag = false;
+
+        const record = document.getElementById("record");
+        const dom = document.getElementById("app");
+        let mosArray = [];
+
+        function onStart() {
+            const speed = document.getElementById("speed").value;
+            const number = document.getElementById("number").value;
+
+            let _speed = 5;
+            switch (speed) {
+                case "1":
+                    _speed = 10;
+                    break;
+                case "2":
+                    _speed = 9;
+                    break;
+                case "3":
+                    _speed = 8;
+                    break;
+                case "4":
+                    _speed = 7;
+                    break;
+                case "5":
+                    _speed = 6;
+                    break;
+                case "6":
+                    _speed = 5;
+                    break;
+                case "7":
+                    _speed = 4;
+                    break;
+                case "8":
+                    _speed = 3;
+                    break;
+                case "9":
+                    _speed = 2;
+                    break;
+                case "10":
+                    _speed = 1;
+                    break;
+            }
+            console.log(speed, _speed);
+            gameStartFlag = true;
+            for (let i = 0; i < number; i++) {
+                mosArray.push(new Mosquito(dom, _speed));
+            }
+
+            record.innerText = "一共有" + mosArray.length + "只蚊子。";
+        }
+
+        window.onload = function () {
+            const swatter = document.getElementById("flyswatter");
+            const burst = document.getElementById("burst");
+            //绑定鼠标移动事件
+            document.onmousemove = e => {
+                const clientX = e.clientX - 25;
+                const clientY = e.clientY - 30;
+                if (clientX < dom.offsetLeft ||
+                    (dom.offsetLeft + dom.offsetWidth) < clientX ||
+                    clientY < dom.offsetTop ||
+                    (dom.offsetTop + dom.offsetHeight) < clientY) {
+                    return;
+                }
+
+                swatter.style.left = clientX + 'px';
+                swatter.style.top = clientY + 'px';
+            }
+
+            document.onmousedown = e => {
+                if (!gameStartFlag) return;
+
+                const clientX = e.clientX;
+                const clientY = e.clientY;
+
+                if (clientX < dom.offsetLeft ||
+                    (dom.offsetLeft + dom.offsetWidth) < clientX ||
+                    clientY < dom.offsetTop ||
+                    (dom.offsetTop + dom.offsetHeight) < clientY) {
+                    return;
+                }
+
+                // 判断是否打中蚊子
+                let target = [];
+                for (let i = 0; i < mosArray.length; i++) {
+                    const mosquito = mosArray[i];
+                    // 拍子的范围
+                    const swatterTop = swatter.offsetTop - dom.offsetTop;
+                    const swatterBottom = swatterTop + swatter.offsetHeight;
+                    const swatterLeft = swatter.offsetLeft - dom.offsetLeft;
+                    const swatterRight = swatterLeft + swatter.offsetWidth;
+
+                    // 蚊子的位置
+                    const mosquitoTop = mosquito.element.offsetTop;
+                    const mosquitoLeft = mosquito.element.offsetLeft;
+
+                    if (swatterTop < mosquitoTop &&
+                        mosquitoTop < swatterBottom &&
+                        swatterLeft < mosquitoLeft &&
+                        mosquitoLeft < swatterRight) {
+                        mosquito.dead();
+                        target.push(i);
+                        burst.style.left = clientX + 'px';
+                        burst.style.top = clientY + 'px';
+                        burst.style.opacity = "1";
+                        setTimeout(() => burst.style.opacity = "0", 1500);
+                    }
+                }
+
+                // 循环删除打中的蚊子
+                if (target.length > 0) {
+                    for (let i = target.length - 1; i >= 0; i--) {
+                        mosArray.splice(target[i], 1);
+                    }
+                }
+
+                record.innerText = "一共有" + mosArray.length + "只蚊子。";
+                if (mosArray.length === 0) {
+                    gameStartFlag = false;
+                    setTimeout(() => alert("恭喜您消灭了全部蚊子！"), 500);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

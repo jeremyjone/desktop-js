@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>贪吃蛇</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #game{
+            height: 600px;
+        }
+        .map {
+            width: 800px;
+            height: 100%;
+            position: relative;
+            float: left;
+            background-color: #ccc;
+        }
+        .record {
+            width: 200px;
+            height: 100%;
+            padding-left: 20px;
+            position: relative;
+            float: left;
+            background-color: aquamarine;
+        }
+        .r-title {
+            width: 100%;
+            height: 40px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .r-content {
+            width: 100%;
+            height: calc(100% - 40px);
+        }
+        #handle {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game">
+        <div class="map">
+
+        </div>
+        <div class="record">
+            <div class="r-title">
+                记录
+            </div>
+            <div class="r-content">
+
+            </div>
+        </div>
+    </div>
+
+    <div id="handle">
+        <button class="btn" onclick="start()">开始</button>
+        <button class="btn" onclick="clearRecord()">清空</button>
+    </div>
+
+    <script>
+        // 食物
+        (function () {
+            var elements = [];
+            function Food(width, height, color) {
+                this.width = width || 20;
+                this.height = height || 20;
+                this.color = color || "green";
+                this.x = 0;
+                this.y = 0;
+            }
+
+            Food.prototype.init = function (map) {
+                remove();
+
+                var div = document.createElement("div");
+                this.x = parseInt(Math.random() * map.offsetWidth / this.width);
+                this.y = parseInt(Math.random() * map.offsetHeight / this.height);
+                div.style.width = this.width + "px";
+                div.style.height = this.height + "px";
+                div.style.backgroundColor = this.color;
+
+                div.style.position = "absolute";
+
+                div.style.left = this.x * this.width + "px";
+                div.style.top = this.y * this.height + "px";
+
+                map.appendChild(div);
+                elements.push(div);
+            };
+
+            function remove() {
+                let i = elements.length - 1;
+                for (; i >= 0; i--) {
+                    const elem = elements[i];
+                    elem.parentNode.removeChild(elem);
+                    elements.splice(i, 1);
+                }
+            };
+
+            window.Food = Food;
+        })();
+
+        // 小蛇
+        (function () {
+            var elements = [];
+            function Snake(width, height) {
+                this.width = width || 20;
+                this.height = height || 20;
+                this.direction = "right";
+                this.speed = 500;
+                this.body = [
+                    { x: 3, y: 2, color: "red" },
+                    { x: 2, y: 2, color: "orange" },
+                    { x: 1, y: 2, color: "orange" },
+                ];
+            }
+
+            Snake.prototype.init = function (map) {
+                remove();
+
+                for (let i = 0; i < this.body.length; i++) {
+                    const elem = this.body[i];
+                    let div = document.createElement("div");
+                    div.style.backgroundColor = elem.color;
+                    div.style.width = this.width + "px";
+                    div.style.height = this.height + "px";
+                    div.style.left = elem.x * this.width + "px";
+                    div.style.top = elem.y * this.height + "px";
+                    div.style.position = "absolute"
+
+                    map.appendChild(div);
+                    elements.push(div);
+                }
+            };
+
+            Snake.prototype.move = function (food, map) {
+                if (food.x === this.body[0].x && food.y === this.body[0].y)
+                {
+                    food.init(map);
+                    this.body.push(
+                        { x: 0, y: 0, color: "orange" }
+                    );
+
+                    if (this.speed > 100) {
+                        this.speed -= 20;
+                    }
+                }
+
+                // 移动身体
+                let i = this.body.length - 1;
+                for (; i > 0; i--) {
+                    this.body[i].x = this.body[i - 1].x;
+                    this.body[i].y = this.body[i - 1].y;
+                }
+
+                // 移动头
+                switch (this.direction) {
+                    case "right": if (this.direction != "left") { this.body[0].x++; break };
+                    case "left": if (this.direction != "right") { this.body[0].x--; break };
+                    case "top": if (this.direction != "bottom") { this.body[0].y--; break };
+                    case "bottom": if (this.direction != "top") { this.body[0].y++; break };
+                    default: break;
+                }
+            };
+
+            function remove() {
+                let i = elements.length - 1;
+                for (; i >= 0; i--) {
+                    const elem = elements[i];
+                    elem.parentNode.removeChild(elem);
+                    elements.splice(i, 1);
+                }
+            };
+
+            window.Snake = Snake;
+        })();
+
+        // 游戏对象
+        (function () {
+            function Game() {
+                this.map = document.querySelector(".map");
+                this.food = new Food();
+                this.snake = new Snake();
+                that = this;
+            }
+
+            Game.prototype.init = function (record) {
+                this.food.init(this.map);
+                this.snake.init(this.map);
+                this.runGame(record);
+                this.bindKey();
+            };
+
+            Game.prototype.runGame = function (record) {
+                var that = this;
+                var timeId = setInterval(run, this.snake.speed);
+
+                function run() {
+                    {
+                        that.snake.move(that.food, that.map);
+                        that.snake.init(that.map);
+                        let maxWidth = that.map.offsetWidth / that.snake.width;
+                        let headX = that.snake.body[0].x;
+                        let maxHeight = that.map.offsetHeight / that.snake.height;
+                        let headY = that.snake.body[0].y;
+
+                        clearInterval(timeId);
+                        timeId = setInterval(run, that.snake.speed);
+
+                        if (0 > headX || headX >= maxWidth || 0 > headY || headY >= maxHeight)
+                        {
+                            clearInterval(timeId);
+                            var r = that.snake.body.length - 3;
+                            record.add(r);
+                            alert("游戏结束。共吃了 " + r + " 个食物。");
+                        }
+                    }
+                }
+            };
+
+            Game.prototype.bindKey = function () {
+                document.addEventListener("keydown", function (e) {
+                    switch (e.keyCode) {
+                        case 37: if (this.snake.direction != "right") this.snake.direction = "left"; break;
+                        case 38: if (this.snake.direction != "bottom") this.snake.direction = "top"; break;
+                        case 39: if (this.snake.direction != "left") this.snake.direction = "right"; break;
+                        case 40: if (this.snake.direction != "top") this.snake.direction = "bottom"; break;
+
+                        default:
+                            break;
+                    }
+                }.bind(that), false);
+            };
+
+            window.Game = Game;
+        })();
+
+        // 创建记录
+        (function () {
+            function Record() {
+                this.recordDiv = document.querySelector(".r-content");
+                this.records = [];
+            }
+
+            Record.prototype.show = function() {
+                this.remove();
+
+                for(var i = 0; i < this.records.length; i++) {
+                    var node = document.createElement("p");
+                    node.innerText = "最高纪录" + (i + 1) + ": " + this.records[i];
+                    this.recordDiv.appendChild(node);
+                }
+            }
+
+            Record.prototype.remove = function() {
+                while(this.recordDiv.hasChildNodes())
+                {
+                    this.recordDiv.removeChild(this.recordDiv.firstChild);
+                }
+            }
+
+            Record.prototype.add = function(r) {
+                if (this.records.length === 0 || r <= this.records[this.records.length -1]) {
+                    this.records.push(r);
+                } else {
+                    for(var i = 0; i < this.records.length; i++) {
+                        if (r > this.records[i]) {
+                            this.records.splice(i, 0, r);
+                            break;
+                        }
+                    }
+                }
+
+                if (this.records.length > 10) {
+                    this.records.splice(10, this.records.length - 10);
+                }
+
+                this.show();
+            }
+
+            Record.prototype.clear = function() {
+                this.records = [];
+                this.show();
+            }
+
+            window.Record = Record;
+        })();
+
+        var record = new Record();
+        record.show();
+
+        function start() {
+            var game = new Game();
+            game.init(record);
+        }
+
+        function clearRecord() {
+            record.clear();
+        }
+
+        start();
+
+    </script>
+</body>
+</html>

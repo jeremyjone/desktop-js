@@ -1,0 +1,156 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: hsl(40, 45%, 80%);
+  color: hsl(0, 0%, 15%);
+}
+
+#app {
+  width: 800px;
+  height: 400px;
+  position: relative;
+  border: 1px solid red;
+}
+
+.mosquito {
+  width: 40px;
+  height: 50px;
+  position: absolute;
+  z-index: 2;
+}
+
+.mosquito-head {
+  width: 14px;
+  height: 14px;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-radius: 7px;
+  margin: 0 auto;
+}
+
+.mosquito-body {
+  border: 0 solid transparent;
+  width: 10px;
+  height: 2px;
+  margin: 0 auto;
+}
+
+.mosquito-mouse {
+  border: 0 solid transparent;
+  -moz-border-radius: 1px;
+  -webkit-border-radius: 1px;
+  border-radius: 1px 1px 0 0;
+  width: 2px;
+  height: 5px;
+  margin: 0 auto;
+}
+
+.mosquito-wing {
+  border: 0 solid transparent;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  width: 40px;
+  height: 6px;
+  margin: 0 auto;
+  animation: fly 0.5s infinite alternate;
+}
+
+.mosquito-nail {
+  border: 0 solid transparent;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 0 0 10px 10px;
+  width: 10px;
+  height: 10px;
+  margin: 0 auto;
+}
+
+@keyframes fly {
+  0% {
+      width: 40px;
+  }
+
+  25% {
+      width: 30px;
+  }
+
+  50% {
+      width: 20px;
+  }
+
+  75% {
+      width: 30px;
+  }
+
+  100% {
+      width: 40px;
+  }
+}
+
+#flyswatter {
+  width: 70px;
+  height: 80px;
+  transform: rotate(-25deg);
+  position: absolute;
+  z-index: 5;
+}
+
+.flyswatter-body {
+  width: 70px;
+  height: 80px;
+  border: 2px solid green;
+  border-radius: 3px;
+  background-image: linear-gradient(to bottom, #061e2b 0, #0f2937 1px, transparent 1px), linear-gradient(to right, green 0, green 1px, transparent 1px);
+  background-size: 5px 5px;
+  background-repeat: repeat;
+}
+
+.flyswatter-handler {
+  width: 6px;
+  height: 20px;
+  background-color: green;
+  margin: 0 auto;
+}
+
+#burst {
+  background: red;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  text-align: center;
+  z-index: 1;
+  opacity: 0;
+}
+
+#burst:before,
+#burst:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 30px;
+  width: 30px;
+  background: red;
+}
+
+#burst:before {
+  -webkit-transform: rotate(30deg);
+  -moz-transform: rotate(30deg);
+  -ms-transform: rotate(30deg);
+  -o-transform: rotate(30deg);
+}
+
+#burst:after {
+  -webkit-transform: rotate(60deg);
+  -moz-transform: rotate(60deg);
+  -ms-transform: rotate(60deg);
+  -o-transform: rotate(60deg);
+}
