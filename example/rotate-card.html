@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>旋转卡片</title>
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            background: #999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        main {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            border: solid 2px black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 900px;
+        }
+
+        main div {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            font-size: 4em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 2s;
+            /* 背面隐藏属性 */
+            backface-visibility: hidden;
+        }
+
+        main:hover div:nth-child(1) {
+            transform: rotateY(-180deg);
+        }
+        main:hover div:nth-child(2) {
+            transform: rotateY(0deg);
+        }
+
+        main div:nth-child(1) {
+            background: darkolivegreen;
+        }
+        main div:nth-child(2) {
+            background: darkgoldenrod;
+            transform: rotateY(180deg);
+        }
+
+        article {
+            margin: 20px;
+            width: 200px;
+            height: 200px;
+            position: relative;
+            border: solid 2px black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 2s;
+            transform-style: preserve-3d;
+        }
+
+        article div {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            font-size: 4em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        article:hover {
+            transform: perspective(900px) rotateY(-180deg);
+        }
+
+        article div:nth-child(1) {
+            background: darkolivegreen;
+        }
+        article div:nth-child(2) {
+            background: darkgoldenrod;
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- div 旋转 -->
+    <main>
+        <div>1</div>
+        <div>2</div>
+    </main>
+
+    <!-- article 旋转 -->
+    <article>
+        <div>1</div>
+        <div>2</div>
+    </article>
+</body>
+
+</html>

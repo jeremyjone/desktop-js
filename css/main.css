@@ -1,0 +1,70 @@
+html,
+body,
+ul,
+ol,
+li,
+iframe,
+p,
+a {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  background: black url("../resource/dbg1.jfif") no-repeat 100% 70%;
+  background-size: cover;
+  box-sizing: border-box;
+}
+
+:root {
+  font-size: 14px;
+}
+
+#desktop {
+  height: inherit;
+}
+
+.transition {
+  transition: all 0.2s;
+}
+
+.tooltips {
+  position: relative;
+  /*这个是关键*/
+  z-index: 2;
+}
+
+.tooltips:hover {
+  z-index: 3;
+}
+
+.tooltips span {
+  display: none;
+}
+
+.tooltips:hover span {
+  /*span 标签仅在 :hover 状态时显示*/
+  display: block;
+  position: absolute;
+  top: 1rem;
+  left: 100%;
+  white-space: nowrap;
+  padding: 2px 5px;
+  border: 1px solid grey;
+  background-color: #fff;
+  color: black;
+  cursor: default;
+}
+
+.tooltips:hover .bottom {
+  top: 50px;
+  left: -10px;
+}
+
+.tooltips:hover .top {
+  bottom: 0px;
+  left: -10px;
+}

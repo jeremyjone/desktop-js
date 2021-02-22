@@ -1,0 +1,36 @@
+.icon {
+  margin: 20px;
+  cursor: default;
+  box-sizing: border-box;
+  font-weight: 500;
+}
+
+.icon:hover {
+  border: 1px dotted #fff;
+}
+
+.icon-pic-container {
+  margin: auto;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+  display: flex;
+  position: relative;
+}
+
+.icon-pic {
+  width: 100%;
+  align-self: center;
+}
+
+.icon-link {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 30%;
+  z-index: 10;
+}
+
+.icon-selected {
+  background-color: rgba(0, 0, 255, 0.5);
+  border: 1px dotted #fff;
+}

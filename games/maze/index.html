@@ -6,7 +6,7 @@
     <title>迷宫</title>
     <style>
         #maze {
-            margin: 100px auto;
+            margin: 50px auto;
             text-align: center;
         }
 
@@ -18,13 +18,13 @@
         #maze span {
             font-family: "Bodoni MT";
             font-size: 20px;
-            font-weight: 700;
             color: brown;
         }
 
         td {
-            width: 20px;
-            height: 20px;
+            width: 14px;
+            height: 14px;
+            font-size: 10px;
             text-align: center;
             color: white;
             border: 0;
@@ -52,17 +52,29 @@
 
 <body>
     <div id="maze">
-        <table border="1" class="t">
-        </table>
-        <button onclick="start()">start</button>
-        <button onclick="reset()">reset</button>
+        <table border="1" class="t" />
+
+        宽：<input type="number" value="20" onchange="changeWidth(event)" />
+        高：<input type="number" value="20" onchange="changeHeight(event)" />
+        <button onclick="reset()">新迷宫</button>
+        <button onclick="start()">显示路径</button>
     </div>
     <script src="maze.js"></script>
     <script>
+        var mazeW = 20;
+        var mazeH = 20;
+
+        function changeWidth(e) {
+            mazeW = parseInt(e.target.value)
+        }
+
+        function changeHeight(e) {
+            mazeH = parseInt(e.target.value)
+        }
 
         function reset() {
             document.querySelector('table').innerHTML = "";
-            maze.generate();
+            maze.generate(mazeH, mazeW);
             maze.drawDom(document.querySelector('table'));
         }
         function start(document) {
@@ -70,7 +82,7 @@
             maze.animation(document);
         }
 
-        let maze = new Maze(20, 20, 20);
+        let maze = new Maze(mazeH, mazeW, 20);
         maze.init(document.querySelector('table'));
     </script>
 

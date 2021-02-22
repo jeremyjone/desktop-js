@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>悬停展开按钮</title>
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            background: #999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 主按钮样式 */
+        main {
+            width: 50px;
+            height: 50px;
+            background: #333;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        main::after {
+            content: "按钮";
+        }
+
+        /* 子按钮包裹器的样式 */
+        main label {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            /* 默认缩到最小 */
+            transform: scale(0);
+            transition: .5s;
+        }
+
+        /* 子按钮样式 */
+        div {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            /* 以包裹器中心旋转 */
+            transform-origin: 50px 50px;
+            transition: .5s;
+        }
+
+        /* 子按钮内容样式 */
+        span {
+            transform: rotate(0deg);
+            transition: .5s;
+        }
+
+        /* 包裹器整体缩放 */
+        main:hover label {
+            transform: scale(1);
+        }
+
+        /* 子按钮分别按顺序，进行不同角度的旋转偏移 */
+        main:hover div:nth-child(1) {
+            transform: rotate(0deg);
+        }
+
+        /* 子按钮的内容，需要根据子按钮本身的旋转角度进行调整，保持内容向上展示 */
+        main:hover div:nth-child(1) span {
+            transform: rotate(360deg);
+        }
+
+        main:hover div:nth-child(2) {
+            transform: rotate(60deg);
+        }
+
+        main:hover div:nth-child(2) span {
+            transform: rotate(300deg);
+        }
+
+        main:hover div:nth-child(3) {
+            transform: rotate(120deg);
+        }
+
+        main:hover div:nth-child(3) span {
+            transform: rotate(240deg);
+        }
+
+        main:hover div:nth-child(4) {
+            transform: rotate(180deg);
+        }
+
+        main:hover div:nth-child(4) span {
+            transform: rotate(180deg);
+        }
+
+        main:hover div:nth-child(5) {
+            transform: rotate(240deg);
+        }
+
+        main:hover div:nth-child(5) span {
+            transform: rotate(120deg);
+        }
+
+        main:hover div:nth-child(6) {
+            transform: rotate(300deg);
+        }
+
+        main:hover div:nth-child(6) span {
+            transform: rotate(60deg);
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- 主按钮 -->
+    <main>
+        <!-- 子按钮的包裹器 -->
+        <label>
+            <!-- div 是子按钮 -->
+            <!-- span 是子按钮的内容 -->
+            <div><span>1</span></div>
+            <div><span>2</span></div>
+            <div><span>3</span></div>
+            <div><span>4</span></div>
+            <div><span>5</span></div>
+            <div><span>6</span></div>
+    </main>
+</body>
+
+</html>

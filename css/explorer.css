@@ -1,0 +1,81 @@
+.explorer-container {
+  position: absolute;
+  width: 100%;
+  height: inherit;
+  z-index: 99;
+  background-color: #d3d3d399;
+}
+
+.explorer {
+  border-radius: 4px;
+  background-color: white;
+  opacity: 0.9;
+  overflow: hidden;
+  /* 禁止选中文本 */
+  -moz-user-select: none; /*火狐*/
+  -webkit-user-select: none; /*webkit浏览器*/
+  -ms-user-select: none; /*IE10*/
+  -khtml-user-select: none; /*早期浏览器*/
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
+.explorer-normal {
+  width: 50%;
+  position: absoulte;
+  transform: translate(var(--explorer-left), var(--explorer-top));
+}
+
+.explorer-max {
+  width: 100%;
+}
+
+.explorer-full {
+  width: 100%;
+  height: 100vh;
+}
+
+.explorer-title-bar {
+  display: flex;
+  height: var(--explorer-title-bar-height);
+  background-color: cornflowerblue;
+}
+
+.explorer-title-bar-name {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+.explorer-title-bar-btn {
+  width: var(--explorer-title-bar-height);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  transform: scale(0.7);
+}
+
+.explorer-normal-btn {
+  background-color: green;
+}
+
+.explorer-max-btn {
+  background-color: yellow;
+}
+
+.explorer-full-btn {
+  background-color: pink;
+}
+
+.explorer-close-btn {
+  background-color: red;
+}
+
+.explorer-content-container {
+  padding: 20px 40px;
+  font-size: 1.2rem;
+}
